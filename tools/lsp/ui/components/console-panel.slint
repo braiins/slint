@@ -1,15 +1,65 @@
 // Copyright © SixtyFPS GmbH <info@slint.dev>
 // SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-Royalty-free-2.0 OR LicenseRef-Slint-Software-3.0
 
-import { TextEdit } from "std-widgets.slint";
+import { Palette, ScrollView } from "std-widgets.slint";
 import { Api } from "../api.slint";
+import { RecentColorPicker } from "widgets/floating-brush-sections/palettes.slint";
+import { SimpleColumn } from "layout-helpers.slint";
+
+global ConsoleStyles {
+    property <bool> light: Palette.color-scheme == ColorScheme.light;
+    out property <color> header-background: light ? #eaeaea : #2f3138;
+    out property <color> divider-line: light ? #e0e0e0 : #454a54;
+    out property <color> log-background: light ? #ffffff : #14181f;
+    out property <color> text-color: light ? #535251 : #cccccc;
+    out property <length> header-height: 27px;
+    out property <length> full-height: 100px;
+}
 
 export component ConsolePanel {
-    height: Api.log-output.is-empty ? 0px : 100px;
-    TextEdit {
-        height: parent.height;
+    // width: 100%;
+    height: Api.log-output.is-empty ? ConsoleStyles.header-height : ConsoleStyles.full-height;
+    SimpleColumn {
+        Rectangle {
+            height: 27px;
+            background: ConsoleStyles.header-background;
+            Rectangle {
+                y: parent.height - self.height;
+                width: 100%;
+                height: 1px;
+                background: ConsoleStyles.divider-line;
 
-        text: Api.log-output;
-        read-only: true;
+            }
+            Text {
+                x: 10px;
+                horizontal-alignment: left;
+                color: ConsoleStyles.text-color;
+                font-family: "Inter";
+                font-size: 12px;
+                text: "Console";
+            }
+        }
+
+        Rectangle {
+            height: ConsoleStyles.full-height - ConsoleStyles.header-height;
+            background: ConsoleStyles.log-background;
+            ScrollView {
+                width: 100%;
+                height: 100%;
+                viewport-width: log.preferred-width + 20px;
+                viewport-height: log.preferred-height + 20px;
+
+                log := Text {
+                    x: 10px;
+                    y: 10px;
+                    color: ConsoleStyles.text-color;
+                    wrap:  TextWrap.no-wrap;
+                    height: 50px;
+                    text: Api.log-output;
+                    font-family: "Source Code Pro";
+                    font-size: 11px;
+                }
+            }
+        }
     }
 }
