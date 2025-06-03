@@ -957,6 +957,11 @@ pub struct ComponentDefinition {
 }
 
 impl ComponentDefinition {
+    /// Set a `debug(...)` handler
+    pub fn debug_handler(&self, handler: Option<Rc<dyn Fn(&str)>>) {
+        generativity::make_guard!(guard);
+        *self.inner.unerase(guard).debug_handler.borrow_mut() = handler;
+    }
     /// Creates a new instance of the component and returns a shared handle to it.
     pub fn create(&self) -> Result<ComponentInstance, PlatformError> {
         generativity::make_guard!(guard);

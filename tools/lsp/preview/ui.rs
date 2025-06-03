@@ -28,6 +28,24 @@ slint::include_modules!();
 
 pub type PropertyDeclarations = HashMap<SmolStr, PropertyDeclaration>;
 
+pub fn append_debug_log_message(ui: &PreviewUi, message: &str) {
+    let api = ui.global::<Api>();
+
+    let mut log_output: slint::SharedString = api.get_log_output();
+    if log_output.is_empty() || log_output.as_str().ends_with('\n') {
+        log_output.push_str(message);
+    } else {
+        log_output.push_str(&format!("\n{message}"));
+    }
+    api.set_log_output(log_output);
+}
+
+pub fn clear_debug_log(ui: &PreviewUi) {
+    let api = ui.global::<Api>();
+
+    api.set_log_output(SharedString::new());
+}
+
 pub fn create_ui(style: String, experimental: bool) -> Result<PreviewUi, PlatformError> {
     let ui = PreviewUi::new()?;
 

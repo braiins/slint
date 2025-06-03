@@ -1437,6 +1437,20 @@ fn set_preview_factory(
     // Ensure that any popups are closed as they are related to the old factory
     i_slint_core::window::WindowInner::from_pub(ui.window()).close_all_popups();
 
+    compiled.debug_handler(Some(Rc::new(|text| {
+        eprintln!("DEBUG> {text}");
+        let text = text.to_string();
+        let _ = slint::invoke_from_event_loop(move || {
+            PREVIEW_STATE.with_borrow(|preview_state| {
+                if let Some(ui) = &preview_state.ui {
+                    ui::append_debug_log_message(ui, &text);
+                }
+            });
+        });
+    })));
+
+    ui::clear_debug_log(ui);
+
     let factory = slint::ComponentFactory::new(move |ctx: FactoryContext| {
         let instance = compiled.create_embedded(ctx).unwrap();
 

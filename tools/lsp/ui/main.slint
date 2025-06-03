@@ -3,7 +3,7 @@
 
 // cSpell: ignore Heade
 
-import { Button, TabWidget } from "std-widgets.slint";
+import { Button, TabWidget, ScrollView, TextEdit } from "std-widgets.slint";
 import { Api, ComponentItem, DiagnosticSummary } from "api.slint";
 
 import { EditorSizeSettings, EditorSpaceSettings, Icons, PickerStyles } from "./components/styling.slint";
@@ -144,6 +144,13 @@ export component PreviewUi inherits Window {
                         }
                     }
 
+                }
+
+                TextEdit {
+                    height: Api.log-output.is-empty ? 0px : 100px;
+
+                    text: Api.log-output;
+                    read-only: true;
                 }
 
                 StatusLine { }

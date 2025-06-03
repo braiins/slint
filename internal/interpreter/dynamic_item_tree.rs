@@ -414,6 +414,8 @@ pub struct ItemTreeDescription<'id> {
     #[cfg(feature = "internal-highlight")]
     pub(crate) raw_type_loader:
         std::cell::OnceCell<Option<std::rc::Rc<i_slint_compiler::typeloader::TypeLoader>>>,
+
+    pub(crate) debug_handler: std::cell::RefCell<Option<Rc<dyn Fn(&str)>>>,
 }
 
 #[derive(Clone, derive_more::From)]
@@ -1379,6 +1381,7 @@ pub(crate) fn generate_item_tree<'id>(
         type_loader: std::cell::OnceCell::new(),
         #[cfg(feature = "internal-highlight")]
         raw_type_loader: std::cell::OnceCell::new(),
+        debug_handler: None.into(),
     };
 
     Rc::new(t)

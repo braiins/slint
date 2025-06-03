@@ -422,7 +422,12 @@ fn call_builtin_function(
         BuiltinFunction::Debug => {
             let to_print: SharedString =
                 eval_expression(&arguments[0], local_context).try_into().unwrap();
-            corelib::debug_log!("{}", to_print);
+            let handler = local_context.component_instance.description.debug_handler.borrow();
+            if let Some(handler) = &*handler {
+                handler(&format!("{}", to_print));
+            } else {
+                corelib::debug_log!("{}", to_print);
+            }
             Value::Void
         }
         BuiltinFunction::Mod => {
