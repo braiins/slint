@@ -19,6 +19,7 @@ import { ColorPickerView } from "components/widgets/floating-brush-picker-widget
 import { TableEditorView } from "components/spreadsheet-dialog.slint";
 import "./assets/Inter-VariableFont.ttf";
 import "./assets/SourceCodePro-Medium.ttf";
+import { ConsolePanel } from "components/console-panel.slint";
 
 export { Api }
 
@@ -146,12 +147,7 @@ export component PreviewUi inherits Window {
 
                 }
 
-                TextEdit {
-                    height: Api.log-output.is-empty ? 0px : 100px;
-
-                    text: Api.log-output;
-                    read-only: true;
-                }
+                ConsolePanel { }
 
                 StatusLine { }
             }

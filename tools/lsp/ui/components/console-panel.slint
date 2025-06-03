@@ -1,0 +1,15 @@
+// Copyright © SixtyFPS GmbH <info@slint.dev>
+// SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-Royalty-free-2.0 OR LicenseRef-Slint-Software-3.0
+
+import { TextEdit } from "std-widgets.slint";
+import { Api } from "../api.slint";
+
+export component ConsolePanel {
+    height: Api.log-output.is-empty ? 0px : 100px;
+    TextEdit {
+        height: parent.height;
+
+        text: Api.log-output;
+        read-only: true;
+    }
+}
