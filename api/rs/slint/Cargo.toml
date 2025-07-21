@@ -17,6 +17,7 @@ categories = ["gui", "rendering::engine", "no-std"]
 
 [lib]
 path = "lib.rs"
+crate-type = ["dynlib"]
 
 [features]
 
