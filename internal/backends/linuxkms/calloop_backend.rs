@@ -247,6 +247,7 @@ impl i_slint_core::platform::Platform for Backend {
         quit_loop.store(false, std::sync::atomic::Ordering::Release);
 
         while !quit_loop.load(std::sync::atomic::Ordering::Acquire) {
+            println!("Main loop started");
             i_slint_core::platform::update_timers_and_animations();
 
             // Only after updating the animation tick, invoke callbacks from invoke_from_event_loop(). They
@@ -257,11 +258,12 @@ impl i_slint_core::platform::Platform for Backend {
 
             if let Some(adapter) = self.window.borrow().as_ref() {
                 adapter.clone().render_if_needed(mouse_position_property.as_ref())?;
+                println!("Rendered");
             };
 
-            let next_timeout = i_slint_core::platform::duration_until_next_timer_update();
+            let _next_timeout = i_slint_core::platform::duration_until_next_timer_update();
             event_loop
-                .dispatch(next_timeout, &mut loop_data)
+                .dispatch(std::time::Duration::default(), &mut loop_data)
                 .map_err(|e| format!("Error dispatch events: {e}"))?;
         }
 

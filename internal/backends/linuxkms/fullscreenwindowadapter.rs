@@ -93,7 +93,7 @@ impl FullscreenWindowAdapter {
         self: Rc<Self>,
         mouse_position: Pin<&Property<Option<LogicalPosition>>>,
     ) -> Result<(), PlatformError> {
-        if self.redraw_requested.replace(false) {
+        if self.redraw_requested.replace(false) || true {
             self.renderer.render_and_present(self.rotation, &|item_renderer| {
                 if let Some(mouse_position) = mouse_position.get() {
                     let cursor_image = mouse_cursor_image();

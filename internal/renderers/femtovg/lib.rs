@@ -129,11 +129,13 @@ impl<B: GraphicsBackend> FemtoVGRenderer<B> {
             window_size.width.try_into().ok().zip(window_size.height.try_into().ok())
         else {
             // Nothing to render
+            eprintln!("Nothing to render");
             return Ok(());
         };
 
         if self.canvas.borrow().is_none() {
             // Nothing to render
+            eprintln!("Nothing to render");
             return Ok(());
         }
 
@@ -255,6 +257,7 @@ impl<B: GraphicsBackend> FemtoVGRenderer<B> {
             self.with_graphics_api(|api| callback.notify(RenderingState::AfterRendering, &api))?;
         }
 
+        println!("present_surface called");
         self.graphics_backend.present_surface(surface)?;
         Ok(())
     }
